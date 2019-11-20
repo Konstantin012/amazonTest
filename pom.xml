@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>12</maven.compiler.source>
-        <maven.compiler.target>12</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <!--Кодировка-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.output>UTF-8</project.build.output>
@@ -43,24 +43,34 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.21.0</version>
-                <configuration>
-                    <systemProperties>
-                        <property>
-                            <name>cfg</name>
-                            <value>src/main/resources/selenium.properties</value>
-                        </property>
-                    </systemProperties>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>suites/testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<profiles>
+    <profile>
+        <id>amazon</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.21.0</version>
+                        <configuration>
+                            <systemProperties>
+                                <property>
+                                    <name>configForAmazon</name>
+                                    <value>src/main/resources/amazon.properties</value>
+                                </property>
+                                <property>
+                                    <name>configForSelenium</name>
+                                    <value>src/main/resources/selenium.properties</value>
+                                </property>
+                            </systemProperties>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>suites/amazonng.xml</suiteXmlFile>
+                            </suiteXmlFiles>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+    </profile>
+</profiles>
+
 </project>

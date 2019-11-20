@@ -16,14 +16,18 @@ import java.util.concurrent.TimeUnit;
 public class BaseTest {
     private static final Logger LOG =  LogManager.getLogger(BaseTest.class);
 
-    protected Properties prop;
+    protected Properties propSel;
     protected WebDriver driver;
     protected String baseUrl;
+    private static final String DEFAULT_PATH = "src/main/resources/selenium.properties";
+
 
     private void loadProperties() throws Exception {
-        String propertyPath = System.getProperty("cfg");
-        prop = new Properties();
-        prop.load(new FileReader(propertyPath));
+        String propertyPathSelenium = System.getProperty("configForSelenium");
+        if(propertyPathSelenium==null)
+            propertyPathSelenium=DEFAULT_PATH;
+        propSel = new Properties();
+        propSel.load(new FileReader(propertyPathSelenium));
     }
 
     @Parameters({"browser"})
@@ -31,16 +35,13 @@ public class BaseTest {
     public void setUp(@Optional("chrome") String browser) throws Exception {
         loadProperties();
 
-        baseUrl = prop.getProperty("base.url");
-
         switch (browser) {
             case "chrome":
-                System.setProperty("webdriver.chrome.driver", prop.getProperty("driver.chrome"));
+                System.setProperty("webdriver.chrome.driver", propSel.getProperty("driver.chrome"));
                 driver = new ChromeDriver();
                 break;
-
             case "firefox":
-                System.setProperty("webdriver.gecko.driver", prop.getProperty("driver.firefox"));
+                System.setProperty("webdriver.gecko.driver", propSel.getProperty("driver.firefox"));
                 driver = new FirefoxDriver();
                 break;
         }
@@ -51,6 +52,7 @@ public class BaseTest {
 
     @BeforeMethod
     public void logTestStart(Method method, Object[] params) {
+
         LOG.info("Start test {} with parameters {}",
                 method.getName(), Arrays.toString(params));
     }

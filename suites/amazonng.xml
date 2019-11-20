@@ -5,7 +5,7 @@
     <test name="demo">
         <parameter name="browser" value="chrome" />
         <classes>
-            <class name="com.academy.project.DemoTests" />
+            <class name="com.academy.amazon.DemoTests" />
         </classes>
     </test>
 </suite>
