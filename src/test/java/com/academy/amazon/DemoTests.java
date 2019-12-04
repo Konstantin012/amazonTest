@@ -1,15 +1,19 @@
 package com.academy.amazon;
 
+import com.academy.amazon.page.MainHomePage;
 import com.academy.framework.test.BaseTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.testng.annotations.BeforeMethod;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Properties;
+import java.io.IOException;
+import java.util.*;
 
 import static com.academy.amazon.page.MainHomePage.startFromHome;
 
@@ -37,12 +41,28 @@ public class DemoTests extends BaseTest {
                 .checkErrorMessage(mes);
     }
 
+    @Test(dataProvider = "MenuTestProvider")
+    public void mainMenuTest(String pathExpected) {
+        new MainHomePage(driver)
+                .checkMainMenu(startFromHome(driver, baseUrl)
+                        .getChildrenFromMainMenu(),pathExpected);
+    }
+
+
+
     @DataProvider(name="testDataProvider1")
     public Object[][] testDataProvider1() {
         String login = propAm.getProperty("incorrectLogin");
         String error = propAm.getProperty("errorMes");
         return new Object[][] {
                 {login,error}
+        };
+    }
+    @DataProvider(name="MenuTestProvider")
+    public Object[][] MenuTestProvider() {
+        String pathExpected = propAm.getProperty("pathForMenuTest");
+        return new Object[][] {
+                {pathExpected}
         };
     }
 }
