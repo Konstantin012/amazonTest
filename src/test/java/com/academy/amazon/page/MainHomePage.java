@@ -2,17 +2,16 @@ package com.academy.amazon.page;
 
 import com.academy.framework.page.BasePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MainHomePage extends BasePage {
 
@@ -23,10 +22,21 @@ public class MainHomePage extends BasePage {
     private WebElement menuButton;
     @FindBy(css = "i[class=\"hm-icon nav-sprite\"]")
     private WebElement shopByCategoryMenu;
+    @FindBy(id = "hmenu-canvas")
+    private WebElement hmenu;
     @FindBy(css = "ul [data-menu-id]")
     private WebElement allCategoriesInMenu;
     @FindBy(xpath = "//div[contains(text(),\"Full Store Directory\")]")
     private WebElement fullStoreDirectory;
+    @FindBy(xpath = "//a[text()=\"Conditions of Use\"]")
+    private WebElement conditionsOfUse;
+    @FindBy(xpath = "//div[text()=\"HELP & SETTINGS\"]")
+    private WebElement helpAndSettings;
+    @FindBy(xpath = "//div[text()=\"SHOP BY CATEGORY\"]")
+    private WebElement shopByCategory;
+    @FindBy(id = "nav-cart-count")
+    private WebElement buyBusket;
+
 
 
 
@@ -34,6 +44,7 @@ public class MainHomePage extends BasePage {
     public MainHomePage(WebDriver driver) {
         super(driver);
     }
+
     public static MainHomePage startFromHome(WebDriver driver, String baseUrl) {
         driver.get(baseUrl);
         driver.get(baseUrl);
@@ -45,6 +56,12 @@ public class MainHomePage extends BasePage {
         return new LogInPage(driver);
     }
 
+    public BasketPPage goToBuyBusket(){
+        buyBusket.click();
+        return new BasketPPage(driver);
+    }
+
+    //GET INFORMATION
     public List<String> getChildrenFromMainMenu(){
         shopByCategoryMenu.click();
         waitingExpectedElement(fullStoreDirectory,5);
@@ -58,4 +75,22 @@ public class MainHomePage extends BasePage {
         List<String> expected = readFromTxt(path);
         checkTwoLists(actual,expected);
     }
+
+    public void checkNumberOfBuyBusket(String expected){
+        String actual = buyBusket.getText();
+        Assert.assertEquals(actual,expected);
+    }
+
+    public void checkBottomHeaders() {
+        shopByCategoryMenu.click();
+
+        EventFiringWebDriver event = new EventFiringWebDriver(driver);
+        event.executeScript(
+                "document.querySelector('#hmenu-content > ul.hmenu.hmenu-visible').scrollTop=500");
+
+
+        helpAndSettings.click();
+
+    }
+
 }

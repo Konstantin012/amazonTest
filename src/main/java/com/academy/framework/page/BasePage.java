@@ -1,6 +1,7 @@
 package com.academy.framework.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -80,6 +81,16 @@ public class BasePage {
         Collections.sort(actual);
         Collections.sort(expected);
         Assert.assertEquals(actual,expected);
+    }
+
+    protected void scrollToElement(WebElement element){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", element);
+    }
+
+    protected void scroll(){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,2000)");
     }
 }
 

@@ -4,15 +4,11 @@ import com.academy.amazon.page.MainHomePage;
 import com.academy.framework.test.BaseTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
 import static com.academy.amazon.page.MainHomePage.startFromHome;
@@ -48,6 +44,20 @@ public class DemoTests extends BaseTest {
                         .getChildrenFromMainMenu(),pathExpected);
     }
 
+    @Test(dataProvider = "AddToBusket")
+    public void addToBusket(String a) {
+
+    }
+
+    @Test
+    public void checkBottomMenu(){
+        startFromHome(driver, baseUrl)
+                .checkBottomHeaders();
+
+
+    }
+
+
 
 
     @DataProvider(name="testDataProvider1")
@@ -63,6 +73,13 @@ public class DemoTests extends BaseTest {
         String pathExpected = propAm.getProperty("pathForMenuTest");
         return new Object[][] {
                 {pathExpected}
+        };
+    }
+    @DataProvider(name="AddToBusket")
+    public Object[][] AddToBusket() {
+        String a = propAm.getProperty("");
+        return new Object[][] {
+                {a}
         };
     }
 }
