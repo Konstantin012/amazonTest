@@ -84,9 +84,17 @@ public class MainHomePage extends BasePage {
     public void checkBottomHeaders() {
         shopByCategoryMenu.click();
 
+        //рабочий метод https://www.360logica.com/blog/multiple-ways-to-scroll-a-page-using-selenium-webdriver/
+        ((JavascriptExecutor)driver).executeScript(
+                "document.querySelector('#hmenu-content > ul.hmenu.hmenu-visible').scrollTo(0,document.body.scrollHeight)");
+
         EventFiringWebDriver event = new EventFiringWebDriver(driver);
+        //рабочий метод
+//        event.executeScript(
+//                "document.querySelector('#hmenu-content > ul.hmenu.hmenu-visible').scrollTop=500");
+        //рабочий метод
         event.executeScript(
-                "document.querySelector('#hmenu-content > ul.hmenu.hmenu-visible').scrollTop=500");
+                "document.querySelector('#hmenu-content > ul.hmenu.hmenu-visible').scrollTo(0,document.body.scrollHeight)");
 
 
         helpAndSettings.click();
