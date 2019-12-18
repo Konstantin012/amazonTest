@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import java.util.List;
@@ -18,27 +17,32 @@ public class MainHomePage extends BasePage {
     //LOCATORS
     @FindBy(css = "a[data-nav-role=\"signin\"]")
     private WebElement signInButton;
+    @FindBy(css = "ul[class=\"hmenu  hmenu-visible\"]")
+    private WebElement mainMenuVisible;
+    @FindBy(css = "ul[class=\"hmenu hmenu-visible hmenu-translateX\"]")
+    private WebElement insideMainMenuVisible;
     @FindBy(css = "i[class=\"hm-icon nav-sprite\"]")
     private WebElement menuButton;
     @FindBy(css = "i[class=\"hm-icon nav-sprite\"]")
     private WebElement shopByCategoryMenu;
-    @FindBy(id = "hmenu-canvas")
-    private WebElement hmenu;
     @FindBy(css = "ul [data-menu-id]")
     private WebElement allCategoriesInMenu;
+
     @FindBy(xpath = "//div[contains(text(),\"Full Store Directory\")]")
     private WebElement fullStoreDirectory;
     @FindBy(xpath = "//a[text()=\"Conditions of Use\"]")
     private WebElement conditionsOfUse;
     @FindBy(xpath = "//div[text()=\"HELP & SETTINGS\"]")
     private WebElement helpAndSettings;
+    @FindBy(xpath = "//ul[@data-menu-id=\"22\"]")
+    private WebElement inMainMenu;
     @FindBy(xpath = "//div[text()=\"SHOP BY CATEGORY\"]")
     private WebElement shopByCategory;
+    //ul[@data-menu-id="22"]/li[position()=3]
     @FindBy(id = "nav-cart-count")
     private WebElement buyBusket;
-
-
-
+    @FindBy(id = "hmenu-canvas")
+    private WebElement hmenu;
 
     //ACTIONS
     public MainHomePage(WebDriver driver) {
@@ -56,10 +60,31 @@ public class MainHomePage extends BasePage {
         return new LogInPage(driver);
     }
 
-    public BasketPPage goToBuyBusket(){
+    public BasketPage goToBuyBusket(){
         buyBusket.click();
-        return new BasketPPage(driver);
+        return new BasketPage(driver);
     }
+
+    public MainHomePage clickOnMainMenu(){
+        shopByCategoryMenu.click();
+        return new MainHomePage(driver);
+    }
+
+    public MainHomePage selectHeadFromMainManu(int numberPanel, int pos){
+        String locator = "";
+
+        if (numberPanel==1){
+            locator = getStringLocatorFromWebElement(mainMenuVisible);
+        }
+        if (numberPanel==2){
+            locator = getStringLocatorFromWebElement(insideMainMenuVisible);
+        }
+        String newLocator = locator + ">li:nth-of-type("+pos+")";
+        waitingExpectedElement(By.cssSelector(newLocator), 10);
+        driver.findElement(By.cssSelector(newLocator)).click();
+        return new MainHomePage(driver);
+    }
+
 
     //GET INFORMATION
     public List<String> getChildrenFromMainMenu(){
@@ -68,6 +93,11 @@ public class MainHomePage extends BasePage {
 //        writeToTxt(getWebElements("ul [data-menu-id]"),"data-menu-id",path);
         List<WebElement> elem = getWebElements("ul [data-menu-id]");
         return elem.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public String getStringLocatorFromWebElement(WebElement element){
+        String[] split =  element.toString().split(":");
+        return split[2].trim().substring(0,split[2].length()-2).replaceAll("\'", "");
     }
 
     //VERIFICATIONS
@@ -84,7 +114,7 @@ public class MainHomePage extends BasePage {
     public void checkBottomHeaders() {
         shopByCategoryMenu.click();
 
-        //рабочий метод https://www.360logica.com/blog/multiple-ways-to-scroll-a-page-using-selenium-webdriver/
+        //рабочий метод СКРОЛА https://www.360logica.com/blog/multiple-ways-to-scroll-a-page-using-selenium-webdriver/
         ((JavascriptExecutor)driver).executeScript(
                 "document.querySelector('#hmenu-content > ul.hmenu.hmenu-visible').scrollTo(0,document.body.scrollHeight)");
 

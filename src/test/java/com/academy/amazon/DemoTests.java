@@ -4,6 +4,9 @@ import com.academy.amazon.page.MainHomePage;
 import com.academy.framework.test.BaseTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -46,7 +49,10 @@ public class DemoTests extends BaseTest {
 
     @Test(dataProvider = "AddToBusket")
     public void addToBusket(String a) {
-
+        startFromHome(driver,baseUrl)
+                .clickOnMainMenu()
+                .selectHeadFromMainManu(1,24)
+                .selectHeadFromMainManu(2, 3);
     }
 
     @Test

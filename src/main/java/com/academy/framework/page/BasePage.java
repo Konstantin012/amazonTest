@@ -41,6 +41,14 @@ public class BasePage {
             e.printStackTrace();
         }
     }
+    protected void waitingExpectedElement(By locator, int time) {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(time))
+                    .until(ExpectedConditions.visibilityOf(driver.findElement(locator)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<WebElement> getWebElements(String locator) {
         return driver.findElements(By.cssSelector(locator));
