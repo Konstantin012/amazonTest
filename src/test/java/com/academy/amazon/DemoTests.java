@@ -4,9 +4,6 @@ import com.academy.amazon.page.MainHomePage;
 import com.academy.framework.test.BaseTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -47,23 +44,19 @@ public class DemoTests extends BaseTest {
                         .getChildrenFromMainMenu(),pathExpected);
     }
 
-    @Test(dataProvider = "AddToBusket")
-    public void addToBusket(String a) {
+    @Test()
+    public void addToBusket() {
         startFromHome(driver,baseUrl)
                 .clickOnMainMenu()
                 .selectHeadFromMainManu(1,24)
-                .selectHeadFromMainManu(2, 3);
+                .selectHeadFromMainManu(2, 3)
+                .returnStuffPage()
+                .selectCurrentElementInGrid(0)
+                .selectSize(1)
+                .addToBasketClick()
+                .checkGoodsInBasket(false)
+                .checkTopBusketIconText(1);
     }
-
-    @Test
-    public void checkBottomMenu(){
-        startFromHome(driver, baseUrl)
-                .checkBottomHeaders();
-
-
-    }
-
-
 
 
     @DataProvider(name="testDataProvider1")
@@ -81,11 +74,5 @@ public class DemoTests extends BaseTest {
                 {pathExpected}
         };
     }
-    @DataProvider(name="AddToBusket")
-    public Object[][] AddToBusket() {
-        String a = propAm.getProperty("");
-        return new Object[][] {
-                {a}
-        };
-    }
+
 }

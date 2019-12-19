@@ -67,6 +67,7 @@ public class MainHomePage extends BasePage {
 
     public MainHomePage clickOnMainMenu(){
         shopByCategoryMenu.click();
+        waiteByTime(2000);
         return new MainHomePage(driver);
     }
 
@@ -85,6 +86,10 @@ public class MainHomePage extends BasePage {
         return new MainHomePage(driver);
     }
 
+    public StuffesPage returnStuffPage(){
+        return new StuffesPage(driver);
+    }
+
 
     //GET INFORMATION
     public List<String> getChildrenFromMainMenu(){
@@ -93,11 +98,6 @@ public class MainHomePage extends BasePage {
 //        writeToTxt(getWebElements("ul [data-menu-id]"),"data-menu-id",path);
         List<WebElement> elem = getWebElements("ul [data-menu-id]");
         return elem.stream().map(WebElement::getText).collect(Collectors.toList());
-    }
-
-    public String getStringLocatorFromWebElement(WebElement element){
-        String[] split =  element.toString().split(":");
-        return split[2].trim().substring(0,split[2].length()-2).replaceAll("\'", "");
     }
 
     //VERIFICATIONS

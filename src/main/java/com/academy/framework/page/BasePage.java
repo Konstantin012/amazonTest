@@ -32,7 +32,6 @@ public class BasePage {
         return driver.getTitle();
     }
 
-    //WAITING
     protected void waitingExpectedElement(WebElement locator, int time) {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(time))
@@ -41,6 +40,7 @@ public class BasePage {
             e.printStackTrace();
         }
     }
+
     protected void waitingExpectedElement(By locator, int time) {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(time))
@@ -48,6 +48,14 @@ public class BasePage {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected void waiteByTime(int time) {
+            try {
+                Thread.sleep(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
     }
 
     public List<WebElement> getWebElements(String locator) {
@@ -99,6 +107,20 @@ public class BasePage {
     protected void scroll(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,2000)");
+    }
+
+    protected boolean tryFindElement(By locator){
+        try {
+            driver.findElement(locator);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    protected String getStringLocatorFromWebElement(WebElement element){
+        String[] split =  element.toString().split(":");
+        return split[2].trim().substring(0,split[2].length()-2).replaceAll("\'", "");
     }
 }
 
